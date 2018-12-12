@@ -21,8 +21,7 @@ Add-Content -Path "$filePath" -Value "OS Version:       $osVersion ($osArchitect
 Add-Content -Path "$filePath" -Value ""
 
 foreach($Update in $Searcher.QueryHistory(0, $historyCount)) {
-    $dateString = $Update.Date.ToString()
-    $UpdateDate = $dateString
+    $UpdateDate = $Update.Date.ToString("yyyy-MM-dd HH:mm:ss")
     $UpdateOperation = switch($Update.Operation){
         1 {"Installation"}; 2 {"Uninstallation"}; 3 {"Other"}
     }
