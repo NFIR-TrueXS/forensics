@@ -36,5 +36,5 @@ if ($historyCount -ne 0) {
         Add-Content -Path "$filePath" -Value ""
     }
 } else {
-    Write "No updates found"
+    Add-Content -Path "$filePath" -Value "No updates found"
 }
