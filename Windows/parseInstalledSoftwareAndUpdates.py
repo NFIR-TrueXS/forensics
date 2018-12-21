@@ -25,8 +25,12 @@ class ParseInstalledSoftwareAndUpdates:
         # Arrays to hold parsed results
         self.installedSoftware = {}
 
+        # Collect all the files
         self.collectFiles()
+
+        # Parse all installedSoftware.txt files
         self.parseInstalledFiles()
+        # Parse all installedUpdates.txt
         self.parseInstalledUpdates()
 
         print(self.installedSoftware)
@@ -45,7 +49,7 @@ class ParseInstalledSoftwareAndUpdates:
 
             machineObj = {}
 
-            # Get file generic information
+            # Get file generic information (the first 6 lines in the file)
             generalInfo = {}
             for i in range(0, 6):
                 key, value = fr.readline().split(':', 1)
@@ -59,6 +63,8 @@ class ParseInstalledSoftwareAndUpdates:
                 # Skip whitelines
                 if line.strip() == '':
                     # Push gathered software info to machineObject
+                    # Whitelines separate different entries,
+                    # so we can use them to determine when an object is complete
                     if len(softwareObj) > 0:
                         machineObj['software'].append(softwareObj)
                         softwareObj = {}
@@ -110,6 +116,9 @@ class ParseInstalledSoftwareAndUpdates:
                     continue
 
                 # Skip lines not starting with an uppercase letter
+                # Uninstall-strings can be multiline, but they aren't relevant to our parser.
+                # So when a line starts with a lowercase character,
+                # it's the second part of a multiline uninstall-string so we can skip it
                 r = re.compile('^[A-Z]')
                 if r.match(line) == None:
                     continue
